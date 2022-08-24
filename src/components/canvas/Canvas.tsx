@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { MouseEventHandler, useRef } from "react";
 
 const CANVAS_WIDTH = 400;
 const CANVAS_HEIGHT = 400;
@@ -6,16 +6,16 @@ const ZOOMED_WIDTH = CANVAS_WIDTH / 2;
 const ZOOMED_HEIGHT = CANVAS_HEIGHT / 2;
 
 function Canvas() {
-  const canvasRef = useRef(null);
-  const zoomedRef = useRef(null);
-  const twinCanvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const zoomedRef = useRef<HTMLCanvasElement>(null);
+  const twinCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const copyCanvas = () => {
-    const canvas = canvasRef.current;
+    const canvas: HTMLCanvasElement = canvasRef.current!;
     const dataurl = canvas.toDataURL();
 
-    const twinCanvas = twinCanvasRef.current;
-    const ctx = twinCanvas.getContext("2d");
+    const twinCanvas = twinCanvasRef.current!;
+    const ctx: CanvasRenderingContext2D = twinCanvas.getContext("2d")!;
     var img = new Image();
     img.src = dataurl;
     img.onload = () => {
@@ -23,16 +23,16 @@ function Canvas() {
     };
   };
 
-  function drawPixel(event) {
-    const canvas = canvasRef.current;
+  function drawSquare(event: React.MouseEvent) {
+    const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d")!;
     const imageData = ctx.createImageData(4, 4);
 
-    // Cada pixel tiene 4 valores
+    // Each pixel has 4 values
     for (let i = 0; i < imageData.data.length; i += 4) {
       imageData.data[i + 0] = 190; // R
       imageData.data[i + 1] = 0; // G
@@ -45,11 +45,11 @@ function Canvas() {
     ctx.putImageData(imageData, x, y);
   }
 
-  const zoom = (event) => {
-    const zoomedCanvas = zoomedRef.current;
-    const ctx = zoomedCanvas.getContext("2d");
+  const zoom = (event: React.MouseEvent) => {
+    const zoomedCanvas = zoomedRef.current!;
+    const ctx = zoomedCanvas.getContext("2d")!;
 
-    const canvas = canvasRef.current;
+    const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
@@ -72,7 +72,7 @@ function Canvas() {
   return (
     <div className="container">
       <canvas
-        onClick={drawPixel}
+        onClick={drawSquare}
         onMouseMove={zoom}
         ref={canvasRef}
         style={{ outline: "1px solid black" }}
