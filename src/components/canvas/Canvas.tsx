@@ -1,8 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { RGBColor } from 'react-color';
 import { ImageDimensions } from '../../constants';
 import { writeCanvasState } from '../../util/db';
+import ServerImage from '../serverImage';
+import Sidebar from '../sidebar';
 
 const Canvas = () => {
+  const [color, setColor] = useState<RGBColor>({
+    r: 0,
+    g: 0,
+    b: 0,
+  });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   function drawPixel(event: React.MouseEvent<HTMLCanvasElement>) {
     event.preventDefault();
@@ -21,9 +29,9 @@ const Canvas = () => {
 
         // Cada pixel tiene 4 valores
         for (let i = 0; i < imageData.data.length; i += 4) {
-          imageData.data[i + 0] = 190; // R
-          imageData.data[i + 1] = 0; // G
-          imageData.data[i + 2] = 210; // B
+          imageData.data[i + 0] = color.r; // R
+          imageData.data[i + 1] = color.g; // G
+          imageData.data[i + 2] = color.b; // B
           imageData.data[i + 3] = 255; // A
         }
 
@@ -45,16 +53,44 @@ const Canvas = () => {
 
   return (
     <>
-      <canvas
-        onClick={drawPixel}
-        ref={canvasRef}
-        style={{ outline: '3px dotted black', zIndex: 999999 }}
-        id="pixelCanvas"
-        width={ImageDimensions.width}
-        height={ImageDimensions.height}
-      />
+      <div
+        style={{
+          position: 'relative',
+          minHeight: '100vh',
+          minWidth: '100vw',
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <canvas
+            onClick={drawPixel}
+            ref={canvasRef}
+            style={{
+              position: 'absolute',
+              outline: '1px dotted rgba(0,0,0,.2)',
+              zIndex: 999999,
+              borderRadius: '5px',
+            }}
+            id="pixelCanvas"
+            width={ImageDimensions.width}
+            height={ImageDimensions.height}
+          />
 
-      <button onClick={submitCanvas}>submit me</button>
+          <ServerImage />
+        </div>
+
+        <Sidebar
+          onSubmit={submitCanvas}
+          onChangeColor={(newValue) => setColor(newValue)}
+          color={color}
+        />
+      </div>
     </>
   );
 };
