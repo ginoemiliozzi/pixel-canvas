@@ -1,10 +1,11 @@
 import "./App.css";
 import Canvas from "./components/canvas";
+import Button from "@mui/material/Button";
 
 function App() {
   return (
     <div className="App">
-      <Canvas />
+      <Button variant="contained">Hello World</Button>
     </div>
   );
 }
