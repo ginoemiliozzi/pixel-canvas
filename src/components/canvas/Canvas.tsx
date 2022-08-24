@@ -8,10 +8,10 @@ import Sidebar from '../sidebar';
 
 const Canvas = ({
   addUserAction,
-  canAddPixels,
   canvasRef,
   svSnapshotCanvasRef,
   onSubmit,
+  remainingPixels,
 }: CanvasProps) => {
   const [color, setColor] = useState<RGBColor>({
     r: 0,
@@ -20,10 +20,9 @@ const Canvas = ({
   });
 
   function drawPixel(event: React.MouseEvent<HTMLCanvasElement>) {
-    console.log(`drawPixel`);
     event.preventDefault();
     event.stopPropagation();
-    if (!canAddPixels) return;
+    if (remainingPixels === 0) return;
 
     const canvas = canvasRef.current;
     const rect = canvas?.getBoundingClientRect();
@@ -89,6 +88,7 @@ const Canvas = ({
         onSubmit={onSubmit}
         onChangeColor={(newValue) => setColor(newValue)}
         color={color}
+        remainingPixels={remainingPixels}
       />
     </div>
   );
@@ -100,6 +100,7 @@ interface CanvasProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   svSnapshotCanvasRef: React.RefObject<HTMLCanvasElement>;
   onSubmit: () => void;
+  remainingPixels: number;
 }
 
 export default Canvas;

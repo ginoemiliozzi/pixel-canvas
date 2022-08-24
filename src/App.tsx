@@ -39,6 +39,7 @@ function App() {
 
   return (
     <Canvas
+      remainingPixels={10 - userActions.length}
       canAddPixels={userActions.length <= 10}
       addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
       canvasRef={userCanvasRef}
