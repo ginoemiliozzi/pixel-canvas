@@ -1,12 +1,13 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { ImageDimensions } from '../../constants';
-import { writeCanvasState } from '../../util/db';
+import { UserAction } from "../../App"
 
-const Canvas = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+const Canvas = ({canAddPixels, addUserAction, canvasRef}: CanvasProps) => {
+
   function drawPixel(event: React.MouseEvent<HTMLCanvasElement>) {
     event.preventDefault();
     event.stopPropagation();
+    if(!canAddPixels) return;
 
     const canvas = canvasRef.current;
     const rect = canvas?.getBoundingClientRect();
@@ -19,7 +20,7 @@ const Canvas = () => {
       if (ctx) {
         const imageData = ctx.createImageData(4, 4);
 
-        // Cada pixel tiene 4 valores
+        // Each pixel has 4 values
         for (let i = 0; i < imageData.data.length; i += 4) {
           imageData.data[i + 0] = 190; // R
           imageData.data[i + 1] = 0; // G
@@ -30,18 +31,10 @@ const Canvas = () => {
         const x = Math.floor(mouseX / 4) * 4;
         const y = Math.floor(mouseY / 4) * 4;
         ctx.putImageData(imageData, x, y);
+        addUserAction({x, y, imageData})
       }
     }
   }
-
-  const submitCanvas = () => {
-    const canvas = canvasRef.current;
-    const dataurl = canvas?.toDataURL();
-
-    if (dataurl) {
-      writeCanvasState(dataurl);
-    }
-  };
 
   return (
     <>
@@ -53,10 +46,15 @@ const Canvas = () => {
         width={ImageDimensions.width}
         height={ImageDimensions.height}
       />
-
-      <button onClick={submitCanvas}>submit me</button>
     </>
   );
 };
+
+interface CanvasProps {
+  canAddPixels: boolean;
+  addUserAction: (ua: UserAction) => void;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+}
+
 
 export default Canvas;
