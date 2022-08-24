@@ -74,7 +74,7 @@ const Canvas = ({
             ref={canvasRef}
             style={{
               position: 'absolute',
-              outline: '1px dotted rgba(0,0,0,.2)',
+              outline: '1px solid rgba(0,0,0,.2)',
               zIndex: 999999,
               borderRadius: '5px',
             }}
