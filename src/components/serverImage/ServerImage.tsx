@@ -24,7 +24,7 @@ const ServerImage = ({ svSnapshotCanvasRef }: ServerImageProps) => {
   return (
     <canvas
       ref={svSnapshotCanvasRef}
-      style={{ outline: '3px dotted black', zIndex: 999999 }}
+      style={{ outline: '3px dotted black', zIndex: -999999 }}
       id="pixelCanvas"
       width={ImageDimensions.width}
       height={ImageDimensions.height}

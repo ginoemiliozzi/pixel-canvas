@@ -1,21 +1,29 @@
 import React, { useRef, useState } from 'react';
 import { RGBColor } from 'react-color';
+import { UserAction } from '../../App';
 import { ImageDimensions } from '../../constants';
 import { writeCanvasState } from '../../util/db';
 import ServerImage from '../serverImage';
 import Sidebar from '../sidebar';
 
-const Canvas = () => {
+const Canvas = ({
+  addUserAction,
+  canAddPixels,
+  canvasRef,
+  svSnapshotCanvasRef,
+  onSubmit,
+}: CanvasProps) => {
   const [color, setColor] = useState<RGBColor>({
     r: 0,
     g: 0,
     b: 0,
   });
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   function drawPixel(event: React.MouseEvent<HTMLCanvasElement>) {
+    console.log(`drawPixel`);
     event.preventDefault();
     event.stopPropagation();
-    if(!canAddPixels) return;
+    if (!canAddPixels) return;
 
     const canvas = canvasRef.current;
     const rect = canvas?.getBoundingClientRect();
@@ -39,7 +47,7 @@ const Canvas = () => {
         const x = Math.floor(mouseX / 4) * 4;
         const y = Math.floor(mouseY / 4) * 4;
         ctx.putImageData(imageData, x, y);
-        addUserAction({x, y, imageData})
+        addUserAction({ x, y, imageData });
       }
     }
   }
@@ -75,11 +83,11 @@ const Canvas = () => {
             height={ImageDimensions.height}
           />
 
-          <ServerImage />
+          <ServerImage svSnapshotCanvasRef={svSnapshotCanvasRef} />
         </div>
 
         <Sidebar
-          onSubmit={submitCanvas}
+          onSubmit={onSubmit}
           onChangeColor={(newValue) => setColor(newValue)}
           color={color}
         />
@@ -92,7 +100,8 @@ interface CanvasProps {
   canAddPixels: boolean;
   addUserAction: (ua: UserAction) => void;
   canvasRef: React.RefObject<HTMLCanvasElement>;
+  svSnapshotCanvasRef: React.RefObject<HTMLCanvasElement>;
+  onSubmit: () => void;
 }
-
 
 export default Canvas;

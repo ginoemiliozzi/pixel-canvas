@@ -30,11 +30,12 @@ function App() {
     // Clean canvas and user actions
     setUserActions([]);
     const userCanvas = userCanvasRef.current;
-    if(userCanvas) clearCanvas(userCanvas, ImageDimensions.width, ImageDimensions.height)
+    if (userCanvas)
+      clearCanvas(userCanvas, ImageDimensions.width, ImageDimensions.height);
 
     // Persist merged snapshot
-    const encodedString = svCanvas?.toDataURL()
-    if(encodedString) writeCanvasState(encodedString)
+    const encodedString = svCanvas?.toDataURL();
+    if (encodedString) writeCanvasState(encodedString);
   };
 
   return (
@@ -43,9 +44,9 @@ function App() {
         canAddPixels={userActions.length <= 10}
         addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
         canvasRef={userCanvasRef}
+        svSnapshotCanvasRef={svSnapshotCanvasRef}
+        onSubmit={mergeUserActionsAndSubmit}
       />
-      <button onClick={mergeUserActionsAndSubmit}>submit me</button>
-      <ServerImage svSnapshotCanvasRef={svSnapshotCanvasRef} />
     </div>
   );
 }
