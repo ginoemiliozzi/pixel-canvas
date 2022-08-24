@@ -1,6 +1,9 @@
 export enum IMAGE_DIMENSIONS {
   width = 800,
-  height = 600,
+  height = 400,
 }
 
-export const SUBMISSION_TIMEOUT_IN_SECONDS = 30;
+export const SQUARE_DIMENSION = 8;
+export const MAX_PIXELS_FOR_SUBMISSION = 20;
+
+export const SUBMISSION_TIMEOUT_IN_SECONDS = 15;

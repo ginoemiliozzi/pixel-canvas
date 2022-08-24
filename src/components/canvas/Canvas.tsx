@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RGBColor } from 'react-color';
 import { UserAction } from '../../App';
-import { IMAGE_DIMENSIONS } from '../../constants';
+import { IMAGE_DIMENSIONS, SQUARE_DIMENSION } from '../../constants';
 
 import ServerImage from '../serverImage';
 import Sidebar from '../sidebar';
@@ -28,25 +28,33 @@ const Canvas = ({
     const rect = canvas?.getBoundingClientRect();
 
     if (rect && canvas) {
-      const mouseX = event.clientX - rect.left;
-      const mouseY = event.clientY - rect.top;
-
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        const imageData = ctx.createImageData(4, 4);
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+        const x = Math.floor(mouseX / SQUARE_DIMENSION) * SQUARE_DIMENSION;
+        const y = Math.floor(mouseY / SQUARE_DIMENSION) * SQUARE_DIMENSION;
+
+        // Avoid creating another square in the same position with the same color
+        const [existingR, existingG, existingB] = ctx.getImageData(x, y, SQUARE_DIMENSION, SQUARE_DIMENSION).data;
+        if(existingR == color.r && existingG == color.g && existingB == color.b) return;
+
+        // Create new square
+        const newSquare = ctx.createImageData(
+          SQUARE_DIMENSION,
+          SQUARE_DIMENSION
+        );
 
         // Each pixel has 4 values
-        for (let i = 0; i < imageData.data.length; i += 4) {
-          imageData.data[i + 0] = color.r; // R
-          imageData.data[i + 1] = color.g; // G
-          imageData.data[i + 2] = color.b; // B
-          imageData.data[i + 3] = 255; // A
+        for (let i = 0; i < newSquare.data.length; i += 4) {
+          newSquare.data[i + 0] = color.r; // R
+          newSquare.data[i + 1] = color.g; // G
+          newSquare.data[i + 2] = color.b; // B
+          newSquare.data[i + 3] = 255; // A
         }
 
-        const x = Math.floor(mouseX / 4) * 4;
-        const y = Math.floor(mouseY / 4) * 4;
-        ctx.putImageData(imageData, x, y);
-        addUserAction({ x, y, imageData });
+        ctx.putImageData(newSquare, x, y);
+        addUserAction({ x, y, imageData: newSquare });
       }
     }
   }

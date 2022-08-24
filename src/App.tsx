@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import Canvas from './components/canvas';
-import { IMAGE_DIMENSIONS } from './constants';
+import { IMAGE_DIMENSIONS, MAX_PIXELS_FOR_SUBMISSION } from './constants';
 import { clearCanvas } from './util/canvas';
 import { writeCanvasState } from './util/db';
 
@@ -39,8 +39,8 @@ function App() {
 
   return (
     <Canvas
-      remainingPixels={10 - userActions.length}
-      canAddPixels={userActions.length <= 10}
+      remainingPixels={MAX_PIXELS_FOR_SUBMISSION - userActions.length}
+      canAddPixels={userActions.length <= MAX_PIXELS_FOR_SUBMISSION}
       addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
       canvasRef={userCanvasRef}
       svSnapshotCanvasRef={svSnapshotCanvasRef}
