@@ -1,4 +1,3 @@
-import "./App.css";
 import { useRef } from "react";
 
 const CANVAS_WIDTH = 400;
@@ -6,7 +5,7 @@ const CANVAS_HEIGHT = 400;
 const ZOOMED_WIDTH = CANVAS_WIDTH / 2;
 const ZOOMED_HEIGHT = CANVAS_HEIGHT / 2;
 
-function App() {
+function Canvas() {
   const canvasRef = useRef(null);
   const zoomedRef = useRef(null);
   const twinCanvasRef = useRef(null);
@@ -33,10 +32,10 @@ function App() {
     const ctx = canvas.getContext("2d");
     const imageData = ctx.createImageData(4, 4);
 
-    // Cada pixel tiene 4 valores 
+    // Cada pixel tiene 4 valores
     for (let i = 0; i < imageData.data.length; i += 4) {
       imageData.data[i + 0] = 190; // R
-      imageData.data[i + 1] = 0;   // G
+      imageData.data[i + 1] = 0; // G
       imageData.data[i + 2] = 210; // B
       imageData.data[i + 3] = 255; // A
     }
@@ -105,4 +104,4 @@ function App() {
   );
 }
 
-export default App;
+export default Canvas;
