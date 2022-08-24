@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import Canvas from './components/canvas';
-import ServerImage from './components/serverImage';
 import { ImageDimensions } from './constants';
 import { clearCanvas } from './util/canvas';
 import { writeCanvasState } from './util/db';
@@ -39,15 +38,13 @@ function App() {
   };
 
   return (
-    <div>
-      <Canvas
-        canAddPixels={userActions.length <= 10}
-        addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
-        canvasRef={userCanvasRef}
-        svSnapshotCanvasRef={svSnapshotCanvasRef}
-        onSubmit={mergeUserActionsAndSubmit}
-      />
-    </div>
+    <Canvas
+      canAddPixels={userActions.length <= 10}
+      addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
+      canvasRef={userCanvasRef}
+      svSnapshotCanvasRef={svSnapshotCanvasRef}
+      onSubmit={mergeUserActionsAndSubmit}
+    />
   );
 }
 
