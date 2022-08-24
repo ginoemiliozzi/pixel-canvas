@@ -1,11 +1,12 @@
-import "./App.css";
-import Canvas from "./components/canvas";
-import Button from "@mui/material/Button";
+import Canvas from './components/canvas';
+import ServerImage from './components/serverImage';
 
 function App() {
   return (
-    <div className="App">
-      <Button variant="contained">Hello World</Button>
+    <div>
+      <Canvas />
+
+      <ServerImage />
     </div>
   );
 }
