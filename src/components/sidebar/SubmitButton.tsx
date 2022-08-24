@@ -1,7 +1,13 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-const SubmitButton = ({ onClick }: { onClick: () => void }) => {
+const SubmitButton = ({
+  onClick,
+  remainingPixels,
+}: {
+  onClick: () => void;
+  remainingPixels: number;
+}) => {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
@@ -24,7 +30,14 @@ const SubmitButton = ({ onClick }: { onClick: () => void }) => {
 
   return (
     <Button onClick={submitImage} variant="outlined" disabled={isDisabled}>
-      {isDisabled ? `Submit more in ${seconds}s` : 'submit'}
+      {isDisabled ? (
+        `Submit more in ${seconds}s`
+      ) : (
+        <>
+          submit
+          <br />({remainingPixels} pixels remaining)
+        </>
+      )}
     </Button>
   );
 };

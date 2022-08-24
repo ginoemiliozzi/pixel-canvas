@@ -1,10 +1,13 @@
 import { SketchPicker, RGBColor } from 'react-color';
+import SubmitButton from './SubmitButton';
 
 const Sidebar = ({
   onSubmit,
   onChangeColor,
   color,
+  remainingPixels,
 }: {
+  remainingPixels: number;
   onSubmit: () => void;
   onChangeColor: (rgbColor: RGBColor) => void;
   color?: RGBColor;
@@ -26,7 +29,7 @@ const Sidebar = ({
             disableAlpha={true}
           />
         </div>
-        <SubmitButton onClick={onSubmit} />
+        <SubmitButton onClick={onSubmit} remainingPixels={remainingPixels} />
       </div>
     </>
   );
