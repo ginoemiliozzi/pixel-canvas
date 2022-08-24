@@ -14,26 +14,25 @@ const Sidebar = ({
   color?: RGBColor;
 }) => {
   return (
-    <div
-      style={{
-        minWidth: '250px',
-        display: 'flex',
-        justifyContent: 'space-around',
-        flexDirection: 'column',
-        padding: '10px',
-      }}>
-      <div style={{ margin: 'auto' }}>
-        <SketchPicker
-          onChange={(newValue) => onChangeColor(newValue.rgb)}
-          color={color}
-          disableAlpha={true}
-        />
+    <>
+      <div
+        style={{
+          minWidth: '250px',
+          display: 'flex',
+          justifyContent: 'space-around',
+          flexDirection: 'column',
+          padding: '10px',
+        }}>
+        <div style={{ margin: 'auto' }}>
+          <SketchPicker
+            onChange={(newValue) => onChangeColor(newValue.rgb)}
+            color={color}
+            disableAlpha={true}
+          />
+        </div>
+        <SubmitButton onClick={onSubmit} />
       </div>
-
-      <Button onClick={onSubmit} variant="outlined">
-        submit
-      </Button>
-    </div>
+    </>
   );
 };
 
