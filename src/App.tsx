@@ -1,14 +1,7 @@
 import Canvas from './components/canvas';
-import ServerImage from './components/serverImage';
 
 function App() {
-  return (
-    <div>
-      <Canvas />
-
-      <ServerImage />
-    </div>
-  );
+  return <Canvas />;
 }
 
 export default App;
