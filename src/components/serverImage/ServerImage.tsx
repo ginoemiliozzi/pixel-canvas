@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ImageDimensions } from '../../constants';
+import React, { useEffect } from 'react';
+import { IMAGE_DIMENSIONS } from '../../constants';
 import { clearCanvas } from '../../util/canvas';
 import { subscribeOnNewSnapshot } from '../../util/db';
 
@@ -10,7 +10,7 @@ const ServerImage = ({ svSnapshotCanvasRef }: ServerImageProps) => {
       if (canvas) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
-          clearCanvas(canvas, ImageDimensions.width, ImageDimensions.height);
+          clearCanvas(canvas, IMAGE_DIMENSIONS.width, IMAGE_DIMENSIONS.height);
           var img = new Image();
           img.src = dataURL;
           img.onload = () => {
@@ -26,8 +26,8 @@ const ServerImage = ({ svSnapshotCanvasRef }: ServerImageProps) => {
       ref={svSnapshotCanvasRef}
       style={{ zIndex: -999999 }}
       id="pixelCanvas"
-      width={ImageDimensions.width}
-      height={ImageDimensions.height}
+      width={IMAGE_DIMENSIONS.width}
+      height={IMAGE_DIMENSIONS.height}
     />
   );
 };

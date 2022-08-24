@@ -1,17 +1,17 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { RGBColor } from 'react-color';
 import { UserAction } from '../../App';
-import { ImageDimensions } from '../../constants';
-import { writeCanvasState } from '../../util/db';
+import { IMAGE_DIMENSIONS } from '../../constants';
+
 import ServerImage from '../serverImage';
 import Sidebar from '../sidebar';
 
 const Canvas = ({
   addUserAction,
-  canAddPixels,
   canvasRef,
   svSnapshotCanvasRef,
   onSubmit,
+  remainingPixels,
 }: CanvasProps) => {
   const [color, setColor] = useState<RGBColor>({
     r: 0,
@@ -20,10 +20,9 @@ const Canvas = ({
   });
 
   function drawPixel(event: React.MouseEvent<HTMLCanvasElement>) {
-    console.log(`drawPixel`);
     event.preventDefault();
     event.stopPropagation();
-    if (!canAddPixels) return;
+    if (remainingPixels === 0) return;
 
     const canvas = canvasRef.current;
     const rect = canvas?.getBoundingClientRect();
@@ -53,46 +52,44 @@ const Canvas = ({
   }
 
   return (
-    <>
+    <div
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        minWidth: '100vw',
+        display: 'flex',
+        justifyContent: 'flex-end',
+      }}>
       <div
         style={{
-          position: 'relative',
-          minHeight: '100vh',
-          minWidth: '100vw',
+          width: '100%',
           display: 'flex',
-          justifyContent: 'flex-end',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-        <div
+        <canvas
+          onClick={drawPixel}
+          ref={canvasRef}
           style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <canvas
-            onClick={drawPixel}
-            ref={canvasRef}
-            style={{
-              position: 'absolute',
-              outline: '1px solid rgba(0,0,0,.2)',
-              zIndex: 999999,
-              borderRadius: '5px',
-            }}
-            id="pixelCanvas"
-            width={ImageDimensions.width}
-            height={ImageDimensions.height}
-          />
-
-          <ServerImage svSnapshotCanvasRef={svSnapshotCanvasRef} />
-        </div>
-
-        <Sidebar
-          onSubmit={onSubmit}
-          onChangeColor={(newValue) => setColor(newValue)}
-          color={color}
+            position: 'absolute',
+            outline: '1px solid rgba(0,0,0,.2)',
+            zIndex: 999999,
+            borderRadius: '5px',
+          }}
+          id="pixelCanvas"
+          width={IMAGE_DIMENSIONS.width}
+          height={IMAGE_DIMENSIONS.height}
         />
+        <ServerImage svSnapshotCanvasRef={svSnapshotCanvasRef} />
       </div>
-    </>
+
+      <Sidebar
+        onSubmit={onSubmit}
+        onChangeColor={(newValue) => setColor(newValue)}
+        color={color}
+        remainingPixels={remainingPixels}
+      />
+    </div>
   );
 };
 
@@ -102,6 +99,7 @@ interface CanvasProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   svSnapshotCanvasRef: React.RefObject<HTMLCanvasElement>;
   onSubmit: () => void;
+  remainingPixels: number;
 }
 
 export default Canvas;

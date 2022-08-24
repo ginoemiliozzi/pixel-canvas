@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import Canvas from './components/canvas';
-import ServerImage from './components/serverImage';
-import { ImageDimensions } from './constants';
+import { IMAGE_DIMENSIONS } from './constants';
 import { clearCanvas } from './util/canvas';
 import { writeCanvasState } from './util/db';
 
@@ -31,7 +30,7 @@ function App() {
     setUserActions([]);
     const userCanvas = userCanvasRef.current;
     if (userCanvas)
-      clearCanvas(userCanvas, ImageDimensions.width, ImageDimensions.height);
+      clearCanvas(userCanvas, IMAGE_DIMENSIONS.width, IMAGE_DIMENSIONS.height);
 
     // Persist merged snapshot
     const encodedString = svCanvas?.toDataURL();
@@ -39,15 +38,14 @@ function App() {
   };
 
   return (
-    <div>
-      <Canvas
-        canAddPixels={userActions.length <= 10}
-        addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
-        canvasRef={userCanvasRef}
-        svSnapshotCanvasRef={svSnapshotCanvasRef}
-        onSubmit={mergeUserActionsAndSubmit}
-      />
-    </div>
+    <Canvas
+      remainingPixels={10 - userActions.length}
+      canAddPixels={userActions.length <= 10}
+      addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
+      canvasRef={userCanvasRef}
+      svSnapshotCanvasRef={svSnapshotCanvasRef}
+      onSubmit={mergeUserActionsAndSubmit}
+    />
   );
 }
 
