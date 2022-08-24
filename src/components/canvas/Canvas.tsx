@@ -15,6 +15,7 @@ const Canvas = () => {
   function drawPixel(event: React.MouseEvent<HTMLCanvasElement>) {
     event.preventDefault();
     event.stopPropagation();
+    if(!canAddPixels) return;
 
     const canvas = canvasRef.current;
     const rect = canvas?.getBoundingClientRect();
@@ -27,7 +28,7 @@ const Canvas = () => {
       if (ctx) {
         const imageData = ctx.createImageData(4, 4);
 
-        // Cada pixel tiene 4 valores
+        // Each pixel has 4 values
         for (let i = 0; i < imageData.data.length; i += 4) {
           imageData.data[i + 0] = color.r; // R
           imageData.data[i + 1] = color.g; // G
@@ -38,18 +39,10 @@ const Canvas = () => {
         const x = Math.floor(mouseX / 4) * 4;
         const y = Math.floor(mouseY / 4) * 4;
         ctx.putImageData(imageData, x, y);
+        addUserAction({x, y, imageData})
       }
     }
   }
-
-  const submitCanvas = () => {
-    const canvas = canvasRef.current;
-    const dataurl = canvas?.toDataURL();
-
-    if (dataurl) {
-      writeCanvasState(dataurl);
-    }
-  };
 
   return (
     <>
@@ -94,5 +87,12 @@ const Canvas = () => {
     </>
   );
 };
+
+interface CanvasProps {
+  canAddPixels: boolean;
+  addUserAction: (ua: UserAction) => void;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+}
+
 
 export default Canvas;
