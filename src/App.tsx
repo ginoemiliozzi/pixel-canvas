@@ -17,25 +17,14 @@ function App() {
   const userCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const mergeUserActionsAndSubmit = () => {
-    // Draw user actions on latest server snapshot
-    const svCanvas = svSnapshotCanvasRef.current;
-    if (svCanvas) {
-      const ctx = svCanvas.getContext('2d');
-      if (ctx) {
-        userActions.forEach((ua) => {
-          ctx.putImageData(ua.imageData, ua.x, ua.y);
-        });
-      }
-    }
+    // Persist merged snapshot
+    writeCanvasState(userActions, userCanvasRef.current!);
+
     // Clean canvas and user actions
     setUserActions([]);
     const userCanvas = userCanvasRef.current;
     if (userCanvas)
       clearCanvas(userCanvas, ImageDimensions.width, ImageDimensions.height);
-
-    // Persist merged snapshot
-    const encodedString = svCanvas?.toDataURL();
-    if (encodedString) writeCanvasState(encodedString);
   };
 
   return (

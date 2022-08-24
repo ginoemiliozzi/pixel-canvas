@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { RGBColor } from 'react-color';
 import { UserAction } from '../../App';
 import { ImageDimensions } from '../../constants';
-import { writeCanvasState } from '../../util/db';
 import ServerImage from '../serverImage';
 import Sidebar from '../sidebar';
 
@@ -20,7 +19,6 @@ const Canvas = ({
   });
 
   function drawPixel(event: React.MouseEvent<HTMLCanvasElement>) {
-    console.log(`drawPixel`);
     event.preventDefault();
     event.stopPropagation();
     if (!canAddPixels) return;
