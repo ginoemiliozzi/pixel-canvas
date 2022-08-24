@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { SUBMISSION_TIMEOUT_IN_SECONDS } from '../../constants';
 
 const SubmitButton = ({
   onClick,
@@ -8,12 +9,12 @@ const SubmitButton = ({
   onClick: () => void;
   remainingPixels: number;
 }) => {
-  const [seconds, setSeconds] = useState(0);
+  const [submissionTimeout, setSubmissionTimeout] = useState(0);
 
   useEffect(() => {
     let myInterval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
+      if (submissionTimeout > 0) {
+        setSubmissionTimeout(submissionTimeout - 1);
       }
     }, 1000);
     return () => {
@@ -23,15 +24,15 @@ const SubmitButton = ({
 
   const submitImage = () => {
     onClick();
-    setSeconds(30);
+    setSubmissionTimeout(SUBMISSION_TIMEOUT_IN_SECONDS);
   };
 
-  const isDisabled = seconds > 0;
+  const isDisabled = submissionTimeout > 0;
 
   return (
     <Button onClick={submitImage} variant="outlined" disabled={isDisabled}>
       {isDisabled ? (
-        `Submit more in ${seconds}s`
+        `Submit more in ${submissionTimeout}s`
       ) : (
         <>
           submit

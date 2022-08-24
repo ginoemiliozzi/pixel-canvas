@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import Canvas from './components/canvas';
-import { ImageDimensions } from './constants';
+import { IMAGE_DIMENSIONS } from './constants';
 import { clearCanvas } from './util/canvas';
 import { writeCanvasState } from './util/db';
 
@@ -30,7 +30,7 @@ function App() {
     setUserActions([]);
     const userCanvas = userCanvasRef.current;
     if (userCanvas)
-      clearCanvas(userCanvas, ImageDimensions.width, ImageDimensions.height);
+      clearCanvas(userCanvas, IMAGE_DIMENSIONS.width, IMAGE_DIMENSIONS.height);
 
     // Persist merged snapshot
     const encodedString = svCanvas?.toDataURL();

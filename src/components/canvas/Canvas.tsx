@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RGBColor } from 'react-color';
 import { UserAction } from '../../App';
-import { ImageDimensions } from '../../constants';
+import { IMAGE_DIMENSIONS } from '../../constants';
 
 import ServerImage from '../serverImage';
 import Sidebar from '../sidebar';
@@ -77,8 +77,8 @@ const Canvas = ({
             borderRadius: '5px',
           }}
           id="pixelCanvas"
-          width={ImageDimensions.width}
-          height={ImageDimensions.height}
+          width={IMAGE_DIMENSIONS.width}
+          height={IMAGE_DIMENSIONS.height}
         />
         <ServerImage svSnapshotCanvasRef={svSnapshotCanvasRef} />
       </div>
