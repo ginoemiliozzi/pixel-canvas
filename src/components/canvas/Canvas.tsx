@@ -53,46 +53,44 @@ const Canvas = ({
   }
 
   return (
-    <>
+    <div
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        minWidth: '100vw',
+        display: 'flex',
+        justifyContent: 'flex-end',
+      }}>
       <div
         style={{
-          position: 'relative',
-          minHeight: '100vh',
-          minWidth: '100vw',
+          width: '100%',
           display: 'flex',
-          justifyContent: 'flex-end',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-        <div
+        <canvas
+          onClick={drawPixel}
+          ref={canvasRef}
           style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <canvas
-            onClick={drawPixel}
-            ref={canvasRef}
-            style={{
-              position: 'absolute',
-              outline: '1px solid rgba(0,0,0,.2)',
-              zIndex: 999999,
-              borderRadius: '5px',
-            }}
-            id="pixelCanvas"
-            width={ImageDimensions.width}
-            height={ImageDimensions.height}
-          />
-
-          <ServerImage svSnapshotCanvasRef={svSnapshotCanvasRef} />
-        </div>
-
-        <Sidebar
-          onSubmit={onSubmit}
-          onChangeColor={(newValue) => setColor(newValue)}
-          color={color}
+            position: 'absolute',
+            outline: '1px solid rgba(0,0,0,.2)',
+            zIndex: 999999,
+            borderRadius: '5px',
+          }}
+          id="pixelCanvas"
+          width={ImageDimensions.width}
+          height={ImageDimensions.height}
         />
+
+        <ServerImage svSnapshotCanvasRef={svSnapshotCanvasRef} />
       </div>
-    </>
+
+      <Sidebar
+        onSubmit={onSubmit}
+        onChangeColor={(newValue) => setColor(newValue)}
+        color={color}
+      />
+    </div>
   );
 };
 
