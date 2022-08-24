@@ -1,7 +1,3 @@
-import React from 'react';
-
-import { Button, Grid } from '@mui/material';
-
 import { SketchPicker, RGBColor } from 'react-color';
 
 const Sidebar = ({
