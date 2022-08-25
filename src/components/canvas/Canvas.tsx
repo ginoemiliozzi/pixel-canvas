@@ -13,6 +13,7 @@ const Canvas = ({
   svSnapshotCanvasRef,
   onSubmit,
   remainingPixels,
+  canvasFinished,
 }: CanvasProps) => {
   const [color, setColor] = useState<RGBColor>({
     r: 0,
@@ -89,6 +90,7 @@ const Canvas = ({
         onChangeColor={(newValue) => setColor(newValue)}
         color={color}
         remainingPixels={remainingPixels}
+        canvasFinished={canvasFinished}
       />
     </div>
   );
@@ -100,6 +102,7 @@ interface CanvasProps {
   svSnapshotCanvasRef: React.RefObject<HTMLCanvasElement>;
   onSubmit: () => void;
   remainingPixels: number;
+  canvasFinished: boolean;
 }
 
 export default Canvas;

@@ -17,6 +17,19 @@ export function subscribeOnNewSnapshot(onValueAction: (data: string) => void) {
   });
 }
 
+export function readEndDate() {
+  const endDateDBRef = ref(db, '/endDate');
+  return get(endDateDBRef)
+    .then((endDate) => {
+      if (endDate.exists()) {
+        console.log("End Date", endDate.val())
+        const localDateTime = new Date(endDate.val());
+        return localDateTime;
+      }
+    })
+    .catch((error) => { console.error(error); });
+}
+
 export const addUserCollaborator = async (userId: number) => {
   const collaboratorsDBRef = ref(db, '/collaborators');
   get(collaboratorsDBRef)

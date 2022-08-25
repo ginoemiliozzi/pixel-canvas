@@ -18,7 +18,8 @@
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "react-countdown": "^2.3.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",

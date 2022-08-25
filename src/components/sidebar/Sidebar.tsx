@@ -6,11 +6,13 @@ const Sidebar = ({
   onChangeColor,
   color,
   remainingPixels,
+  canvasFinished,
 }: {
   remainingPixels: number;
   onSubmit: () => void;
   onChangeColor: (rgbColor: RGBColor) => void;
   color?: RGBColor;
+  canvasFinished: boolean;
 }) => {
   return (
     <>
@@ -29,7 +31,7 @@ const Sidebar = ({
             disableAlpha={true}
           />
         </div>
-        <SubmitButton onClick={onSubmit} remainingPixels={remainingPixels} />
+        <SubmitButton onClick={onSubmit} remainingPixels={remainingPixels} canvasFinished={canvasFinished}/>
       </div>
     </>
   );
