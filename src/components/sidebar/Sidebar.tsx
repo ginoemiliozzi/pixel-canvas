@@ -23,7 +23,7 @@ const Sidebar = ({
         style={{
           minWidth: '250px',
           display: 'flex',
-          justifyContent: 'space-around',
+          // justifyContent: 'space-around',
           flexDirection: 'column',
           padding: '10px',
         }}>
