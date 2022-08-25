@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Canvas from './components/canvas';
 import { IMAGE_DIMENSIONS, MAX_PIXELS_FOR_SUBMISSION } from './constants';
-import { clearCanvas } from './util/canvas';
-import { writeCanvasState } from './util/db';
+import { applyUserActions, clearCanvas } from './util/canvas';
+import { addUserCollaborator, writeCanvasState } from './util/db';
 
 export interface UserAction {
   x: number;
@@ -19,12 +19,7 @@ function App() {
     // Draw user actions on latest server snapshot
     const svCanvas = svSnapshotCanvasRef.current;
     if (svCanvas) {
-      const ctx = svCanvas.getContext('2d');
-      if (ctx) {
-        userActions.forEach((ua) => {
-          ctx.putImageData(ua.imageData, ua.x, ua.y);
-        });
-      }
+      applyUserActions(userActions, svCanvas)
     }
     // Clean canvas and user actions
     setUserActions([]);
@@ -37,10 +32,16 @@ function App() {
     if (encodedString) writeCanvasState(encodedString);
   };
 
+  useEffect(() => {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    const userId: string | null = params.userId;
+    if(userId) addUserCollaborator(parseInt(userId))
+  }, [])
+
   return (
     <Canvas
       remainingPixels={MAX_PIXELS_FOR_SUBMISSION - userActions.length}
-      canAddPixels={userActions.length <= MAX_PIXELS_FOR_SUBMISSION}
       addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
       canvasRef={userCanvasRef}
       svSnapshotCanvasRef={svSnapshotCanvasRef}
