@@ -5,7 +5,7 @@ import { SUBMISSION_TIMEOUT_IN_SECONDS } from '../../constants';
 const SubmitButton = ({
   onClick,
   remainingPixels,
-  canvasFinished
+  canvasFinished,
 }: {
   onClick: () => void;
   remainingPixels: number;
@@ -31,19 +31,18 @@ const SubmitButton = ({
 
   const isDisabled = submissionTimeout > 0;
 
-  return (
-    !canvasFinished &&
-        <Button onClick={submitImage} variant="outlined" disabled={isDisabled}>
-          {isDisabled ? (
-            `Submit more in ${submissionTimeout}s`
-          ) : (
-          <>
-            submit
-            <br />({remainingPixels} pixels remaining)
-          </>
-          )}
-        </Button>
-  );
+  return !canvasFinished ? (
+    <Button onClick={submitImage} variant="outlined" disabled={isDisabled}>
+      {isDisabled ? (
+        `Submit more in ${submissionTimeout}s`
+      ) : (
+        <>
+          submit
+          <br />({remainingPixels} pixels remaining)
+        </>
+      )}
+    </Button>
+  ) : null;
 };
 
 export default SubmitButton;
