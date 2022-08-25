@@ -12,8 +12,11 @@ const HoverGridItem = styled.div`
   display: inline;
   background: transparent;
   &:hover {
-    background: ${(props: any) =>
+    background: ${(props: { hoverColor: any }) =>
       `rgb(${props.hoverColor.r},${props.hoverColor.g},${props.hoverColor.b})`};
+  }
+  &:active {
+    background: yellow;
   }
   width: ${SQUARE_DIMENSION}px;
   height: ${SQUARE_DIMENSION}px;
