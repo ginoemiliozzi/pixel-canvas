@@ -6,6 +6,21 @@ import { isTheSameColor, paintWithColor } from '../../util/canvas';
 
 import ServerImage from '../serverImage';
 import Sidebar from '../sidebar';
+import styled from '@emotion/styled';
+
+const HoverGridItem = styled.div`
+  display: inline;
+  background: transparent;
+  &:hover {
+    background: ${(props: { hoverColor: any }) =>
+      `rgb(${props.hoverColor.r},${props.hoverColor.g},${props.hoverColor.b})`};
+  }
+  &:active {
+    background: yellow;
+  }
+  width: ${SQUARE_DIMENSION}px;
+  height: ${SQUARE_DIMENSION}px;
+`;
 
 const Canvas = ({
   addUserAction,
@@ -27,7 +42,10 @@ const Canvas = ({
   );
   const [nativeCursorIsHidden, setNativeCursorIsHidden] = useState(false);
 
-  function drawPixel(event: React.MouseEvent<HTMLCanvasElement>) {
+  function drawPixel(
+    event: any
+    // React.MouseEvent<HTMLCanvasElement>
+  ) {
     event.preventDefault();
     event.stopPropagation();
     if (remainingPixels === 0) return;
@@ -44,14 +62,20 @@ const Canvas = ({
         const y = Math.floor(mouseY / SQUARE_DIMENSION) * SQUARE_DIMENSION;
 
         // Avoid creating another square in the same position with the same color
-        const [currentR, currentG, currentB] = ctx.getImageData(x, y, SQUARE_DIMENSION, SQUARE_DIMENSION).data;
-        if(isTheSameColor({r: currentR, g: currentG, b: currentB}, color)) return;
+        const [currentR, currentG, currentB] = ctx.getImageData(
+          x,
+          y,
+          SQUARE_DIMENSION,
+          SQUARE_DIMENSION
+        ).data;
+        if (isTheSameColor({ r: currentR, g: currentG, b: currentB }, color))
+          return;
 
         const newSquare: ImageData = ctx.createImageData(
           SQUARE_DIMENSION,
           SQUARE_DIMENSION
         );
-        paintWithColor(newSquare, color)
+        paintWithColor(newSquare, color);
 
         ctx.putImageData(newSquare, x, y);
         addUserAction({ x, y, imageData: newSquare });
@@ -75,8 +99,25 @@ const Canvas = ({
           alignItems: 'flex-start',
           justifyContent: 'center',
         }}>
-        <canvas
+        <div
           onClick={drawPixel}
+          style={{
+            position: 'absolute',
+
+            width: IMAGE_DIMENSIONS.width,
+            height: IMAGE_DIMENSIONS.height,
+            display: 'grid',
+            gridTemplateColumns: `repeat(100,8px)`,
+            gridTemplateRows: `auto`,
+            zIndex: 99999999999,
+            cursor: 'none',
+          }}>
+          {[...Array(5000)].map((value, index) => {
+            return <HoverGridItem hoverColor={color as any} />;
+          })}
+        </div>
+        <canvas
+          //   onClick={drawPixel}
           ref={canvasRef}
           style={{
             position: 'absolute',
@@ -88,6 +129,7 @@ const Canvas = ({
           width={IMAGE_DIMENSIONS.width}
           height={IMAGE_DIMENSIONS.height}
         />
+
         <ServerImage svSnapshotCanvasRef={svSnapshotCanvasRef} />
       </div>
 
