@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { RGBColor } from 'react-color';
 import { UserAction } from '../../App';
 import { IMAGE_DIMENSIONS, SQUARE_DIMENSION } from '../../constants';
+import { isTheSameColor, paintWithColor } from '../../util/canvas';
 
 import ServerImage from '../serverImage';
 import Sidebar from '../sidebar';
@@ -36,22 +37,14 @@ const Canvas = ({
         const y = Math.floor(mouseY / SQUARE_DIMENSION) * SQUARE_DIMENSION;
 
         // Avoid creating another square in the same position with the same color
-        const [existingR, existingG, existingB] = ctx.getImageData(x, y, SQUARE_DIMENSION, SQUARE_DIMENSION).data;
-        if(existingR == color.r && existingG == color.g && existingB == color.b) return;
+        const [currentR, currentG, currentB] = ctx.getImageData(x, y, SQUARE_DIMENSION, SQUARE_DIMENSION).data;
+        if(isTheSameColor({r: currentR, g: currentG, b: currentB}, color)) return;
 
-        // Create new square
-        const newSquare = ctx.createImageData(
+        const newSquare: ImageData = ctx.createImageData(
           SQUARE_DIMENSION,
           SQUARE_DIMENSION
         );
-
-        // Each pixel has 4 values
-        for (let i = 0; i < newSquare.data.length; i += 4) {
-          newSquare.data[i + 0] = color.r; // R
-          newSquare.data[i + 1] = color.g; // G
-          newSquare.data[i + 2] = color.b; // B
-          newSquare.data[i + 3] = 255; // A
-        }
+        paintWithColor(newSquare, color)
 
         ctx.putImageData(newSquare, x, y);
         addUserAction({ x, y, imageData: newSquare });
@@ -102,7 +95,6 @@ const Canvas = ({
 };
 
 interface CanvasProps {
-  canAddPixels: boolean;
   addUserAction: (ua: UserAction) => void;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   svSnapshotCanvasRef: React.RefObject<HTMLCanvasElement>;
