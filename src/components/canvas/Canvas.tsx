@@ -56,16 +56,16 @@ const Canvas = ({
     <div
       style={{
         position: 'relative',
-        minHeight: '100vh',
+        // minHeight: '100vh',
         minWidth: '100vw',
         display: 'flex',
-        justifyContent: 'flex-end',
+        // justifyContent: 'flex-end',
       }}>
       <div
         style={{
           width: '100%',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'center',
         }}>
         <canvas
