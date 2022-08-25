@@ -51,7 +51,7 @@ function App() {
   useEffect(() => {
     const f = async () => {
       const date = await readEndDate();
-      setEndDate(date);
+      if(date) setEndDate(date);
     };
 
     f();
