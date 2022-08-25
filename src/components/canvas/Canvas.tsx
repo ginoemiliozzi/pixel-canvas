@@ -14,11 +14,17 @@ const Canvas = ({
   onSubmit,
   remainingPixels,
 }: CanvasProps) => {
-  const [color, setColor] = useState<RGBColor>({
-    r: 0,
-    g: 0,
-    b: 0,
-  });
+  const localStorageColor = localStorage.getItem('pixelCanvasColor');
+  const [color, setColor] = useState<RGBColor>(
+    localStorageColor !== null
+      ? JSON.parse(localStorageColor)
+      : {
+          r: 98,
+          g: 223,
+          b: 183,
+        }
+  );
+  const [nativeCursorIsHidden, setNativeCursorIsHidden] = useState(false);
 
   function drawPixel(event: React.MouseEvent<HTMLCanvasElement>) {
     event.preventDefault();

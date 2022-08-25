@@ -12,6 +12,11 @@ const Sidebar = ({
   onChangeColor: (rgbColor: RGBColor) => void;
   color?: RGBColor;
 }) => {
+  const changeColor = (rgb: RGBColor) => {
+    onChangeColor(rgb);
+    localStorage.setItem('pixelCanvasColor', JSON.stringify(rgb));
+  };
+
   return (
     <>
       <div
@@ -24,7 +29,7 @@ const Sidebar = ({
         }}>
         <div style={{ margin: 'auto' }}>
           <SketchPicker
-            onChange={(newValue) => onChangeColor(newValue.rgb)}
+            onChange={(newValue) => changeColor(newValue.rgb)}
             color={color}
             disableAlpha={true}
           />
