@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Canvas from './components/canvas';
 import { IMAGE_DIMENSIONS, MAX_PIXELS_FOR_SUBMISSION } from './constants';
 import { applyUserActions, clearCanvas } from './util/canvas';
-import { writeCanvasState } from './util/db';
+import { addUserCollaborator, writeCanvasState } from './util/db';
 
 export interface UserAction {
   x: number;
@@ -31,6 +31,13 @@ function App() {
     const encodedString = svCanvas?.toDataURL();
     if (encodedString) writeCanvasState(encodedString);
   };
+
+  useEffect(() => {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    const userId: string | null = params.userId;
+    if(userId) addUserCollaborator(parseInt(userId))
+  }, [])
 
   return (
     <Canvas
