@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import Canvas from './components/canvas';
 import { IMAGE_DIMENSIONS, MAX_PIXELS_FOR_SUBMISSION } from './constants';
 import { applyUserActions, clearCanvas } from './util/canvas';
-import { Routes, Route } from 'react-router-dom';
-import AdminPanel from './AdminPanel';
 import { addUserCollaborator, writeCanvasState, readEndDate } from './util/db';
 import Countdown from 'react-countdown';
 
@@ -58,30 +56,22 @@ function App() {
   }, [])
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <div>
-            {endDate &&
-              <Countdown date={endDate} onComplete={blockSubmissions}>
-                <h2>Game Over</h2>
-              </Countdown>
-            }
+    <div>
+    {endDate &&
+      <Countdown date={endDate} onComplete={blockSubmissions}>
+        <h2>Game Over</h2>
+      </Countdown>
+    }
 
-            <Canvas
-              remainingPixels={MAX_PIXELS_FOR_SUBMISSION - userActions.length}
-              addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
-              canvasRef={userCanvasRef}
-              svSnapshotCanvasRef={svSnapshotCanvasRef}
-              onSubmit={mergeUserActionsAndSubmit}
-              canvasFinished={canvasFinished}
-            />
-          </div>
-        }
-      />
-      <Route path="/pixeladminpanel" element={<AdminPanel />} />
-    </Routes>
+    <Canvas
+      remainingPixels={MAX_PIXELS_FOR_SUBMISSION - userActions.length}
+      addUserAction={(ua) => setUserActions((prev) => prev.concat(ua))}
+      canvasRef={userCanvasRef}
+      svSnapshotCanvasRef={svSnapshotCanvasRef}
+      onSubmit={mergeUserActionsAndSubmit}
+      canvasFinished={canvasFinished}
+    />
+  </div>
   );
 }
 
