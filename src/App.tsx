@@ -4,7 +4,7 @@ import { IMAGE_DIMENSIONS, MAX_PIXELS_FOR_SUBMISSION } from './constants';
 import { applyUserActions, clearCanvas } from './util/canvas';
 import { addUserCollaborator, writeCanvasState, readEndDate } from './util/db';
 import Countdown from 'react-countdown';
-
+import { useLocation } from 'react-router-dom'
 export interface UserAction {
   x: number;
   y: number;
@@ -12,6 +12,7 @@ export interface UserAction {
 }
 
 function App() {
+  const { search } = useLocation()
   const [userActions, setUserActions] = useState<UserAction[]>([]);
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [canvasFinished, setCanvasFinished] = useState<boolean>(false);
@@ -36,11 +37,11 @@ function App() {
   };
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(window.location.search);
+    const urlSearchParams = new URLSearchParams(search);
     const params = Object.fromEntries(urlSearchParams.entries());
     const userId: string | null = params.userId;
     if (userId) addUserCollaborator(parseInt(userId));
-  }, []);
+  }, [search]);
 
   const blockSubmissions = () => {
     setCanvasFinished(true);
